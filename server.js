@@ -3,19 +3,20 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var env = require('node-env-file');
 const fetch = require('node-fetch');
+const log = require('./logger');
 var port = 3000;
 env(__dirname + '/.env');
 
 io.on('connection', socket => {
-    console.log('New user connected -- Socket UDCH server');
+    log.info('New user connected -- Socket UDCH server');
     const sendEmit = (event, data) => {
-        console.log('broadcast emit event:' + event);
+        log.info('broadcast emit event:' + event);
         socket.broadcast.emit(event, data);
     };
 
     const actionFetch = (event, url) => {
         fetch(url).then(response => response.json()).then(data => {
-            console.log(data);
+            log.fatal('broadcast emit event:' + event);
             if (data.data.order_complte) {
                 sendEmit(event, data);
             }
@@ -31,11 +32,11 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', function () {
-        console.log('disconnected server');
+        log.info('disconnected server');
         io.emit('disconnected', { 'message': 'Bey' });
     });
 });
 
 http.listen(port, function () {
-    console.log('running in port http://localhost:' + port)
+    log.trace('server start in port http://localhost:' + port);
 });
