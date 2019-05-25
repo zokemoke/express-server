@@ -18,6 +18,7 @@ io.on('connection', socket => {
         fetch(url).then(response => response.json()).then(data => {
             log.fatal('broadcast emit event:' + event);
             if (data.data.order_complte) {
+                log.info(data)
                 sendEmit(event, data);
             }
         });
