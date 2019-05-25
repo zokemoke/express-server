@@ -29,6 +29,7 @@ io.on('connection', socket => {
             visit_id: data.visit_id
         });
         let mainUrl = process.env.backendUrl + 'api/public-thai-his/order-chemo-complte?' + params
+	log.info(mainUrl);
         actionFetch('newOrderChemo', mainUrl);
     });
 
