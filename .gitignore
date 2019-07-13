@@ -2,5 +2,4 @@
 yarm.lock
 yarn-error.log
 .DS_Store
-logs/*
 .env
