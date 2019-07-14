@@ -9,7 +9,7 @@ var port = 3000;
 env(__dirname + '/.env');
 
 io.on('connection', socket => {
-    log.info('New user connected -- Socket UDCH server');
+    log.info('New user connected IP:' + socket.handshake.address);
     const sendEmit = (event, data) => {
         log.info('broadcast emit event:' + event);
         socket.broadcast.emit(event, data);
