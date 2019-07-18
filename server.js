@@ -10,9 +10,19 @@ env(__dirname + '/.env');
 
 io.on('connection', socket => {
     log.info('New user connected IP:' + socket.handshake.address);
+    socket.on('room', function(room) {
+        socket.join(room);
+        log.info('joiner room: '+room);
+    });
+
     const sendEmit = (event, data) => {
         log.info('broadcast emit event:' + event);
         socket.broadcast.emit(event, data);
+    };
+
+    const sendEmitRoom = (room, event, data) => {
+        log.info('room '+ room +' emit event:' + event);
+        socket.in(room).emit(event, data);
     };
 
     const actionFetch = (event, url) => {
@@ -68,7 +78,7 @@ io.on('connection', socket => {
     });
 
     socket.on('edc_receive_order', (data) => {
-        sendEmit('edc_receive_order', data);
+        sendEmitRoom(data.room, 'edc_receive_order', data.data);
     });
 });
 
